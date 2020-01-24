@@ -1,6 +1,52 @@
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   text-align: center;
+}
+
+.happy-city {
+  background: blue url("img/simcity.jpg") no-repeat center center fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+.explosion {
+  background: red url("img/explosion.jpg") no-repeat center center fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
+.countdown {
+  font-size: 24px;
+}
+
+.countdown-panic {
+  color: red;
+}
+
+.countdown-saved {
+  color: green;
+}
+
+.gamespace {
+  background-color: black;
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 20px;
+}
+
+.reset {
+  display: block;
+  height: 28px;
+  width: 100%;
+  background-color: white;
+  border: 1px solid black;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 5px;
 }

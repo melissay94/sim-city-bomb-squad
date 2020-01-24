@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Sim City Bomb Squad</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <script src="bomb.js" type="text/javascript"></script>
   </head>
-  <body>
+  <body class="happy-city">
     <!-- Your code here -->
+    <div class="gamespace">
+      <p class="countdown countdown-panic">00:00:00.000</p>
+      <div class="wires">
+        <img src="img/uncut-blue-wire.png" alt="Uncut blue wire" class="blue-wire"/>
+        <img src="img/uncut-green-wire.png" alt="uncut green wire" class="green-wire"/>
+        <img src="img/uncut-red-wire.png" alt="uncut red wire" class="red-wire"/>
+        <img src="img/uncut-white-wire.png" alt="uncut white wire" class="white-wire"/>
+        <img src="img/uncut-yellow-wire.png" alt="uncut yellow wire" class="yellow-wire"/>
+      </div>
+      <button class="reset" disabled>Reset</button>
+    </div>
   </body>
 </html>
