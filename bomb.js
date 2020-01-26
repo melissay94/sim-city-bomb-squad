@@ -1,6 +1,4 @@
 
-console.log("loaded!");
-
 const STARTING_TIME = 30;
 
 const WIRES = {
@@ -40,6 +38,7 @@ let wiresToCut = [];
 let wiresCutCount = 0;
 let remainingTime = STARTING_TIME;
 let domResetBtn;
+let wireDiv;
 
 const setUpGame = function() {
 
@@ -57,6 +56,8 @@ const setUpGame = function() {
 
     body.classList.add("happy-city");
     body.classList.remove("explosion");    
+
+    wireDiv.addEventListener("click", wireClickHandler);
 
     setUpWiresToCut();
 
@@ -93,15 +94,13 @@ const checkWin = function(currentWire) {
 
     if (currentWire.needsCut === false && currentWire.cut === true) {
         gameLost();
-        domResetBtn.disabled = false;
         return;
     } else {
         wiresCutCount++;
     }
     
     if (wiresCutCount === wiresToCut.length) {
-        console.log("Game Won!");
-        domResetBtn.disabled = false;
+        gameWon();
     }
 
 }
@@ -110,14 +109,20 @@ const gameLost = function() {
     const BODY = document.querySelector("body");
     BODY.classList.remove("happy-city");
     BODY.classList.add("explosion");
+    domResetBtn.disabled = false;
+    wireDiv.removeEventListener("click", wireClickHandler);
+}
+
+const gameWon = function() {
+    console.log("Game Won!");
+    domResetBtn.disabled = false;
+    wireDiv.removeEventListener("click", wireClickHandler);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    let wireDiv = document.querySelector(".wires");
+    wireDiv = document.querySelector(".wires");
     domResetBtn = document.querySelector(".reset");
-
-    wireDiv.addEventListener("click", wireClickHandler);
 
     domResetBtn.addEventListener("click", setUpGame);
 
