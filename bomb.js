@@ -36,13 +36,18 @@ const WIRES = {
 
 let wiresToCut = [];
 let wiresCutCount = 0;
-let remainingTime = STARTING_TIME;
+let remainingTime;
 let domResetBtn;
+let domTimer
 let wireDiv;
+let countdown;
 
 const setUpGame = function() {
 
-    let domTimer = document.querySelector(".countdown");
+    domTimer = document.querySelector(".countdown");
+    domTimer.classList.remove("countdown-saved");
+    domTimer.classList.add("countdown-panic");
+
     let domWires = document.querySelectorAll("img");
     let body = document.querySelector("body");
 
@@ -61,6 +66,20 @@ const setUpGame = function() {
 
     setUpWiresToCut();
 
+    setTimeout(function() {
+        countdown = setInterval(updateClock, 1000);
+    }, 500);
+
+}
+
+const updateClock = function() {
+    // TODO: count down in milliseconds
+    remainingTime--;
+
+    if (remainingTime <= 0) {
+        setTimeout(gameLost, 750);
+    }
+    domTimer.textContent = `00:00:${remainingTime > 10?remainingTime:"0"+remainingTime}`;
 }
 
 const setUpWiresToCut = function() {
@@ -70,6 +89,7 @@ const setUpWiresToCut = function() {
 
     for (const wire in WIRES) {
         WIRES[wire].cut = false;
+        WIRES[wire].needsCut = false;
         let randomChance = Math.floor(Math.random() * 2);
 
         if (randomChance % 2 === 0) {
@@ -77,6 +97,8 @@ const setUpWiresToCut = function() {
             wiresToCut.push(wire);
         }
     }
+
+    console.log(wiresToCut);
 }
 
 const wireClickHandler = function(e) {
@@ -91,16 +113,16 @@ const wireClickHandler = function(e) {
 }
 
 const checkWin = function(currentWire) {
-
+    console.log(currentWire);
     if (currentWire.needsCut === false && currentWire.cut === true) {
-        gameLost();
+        setTimeout(gameLost, 750);
         return;
     } else {
         wiresCutCount++;
     }
     
     if (wiresCutCount === wiresToCut.length) {
-        gameWon();
+        setTimeout(gameWon, 750);
     }
 
 }
@@ -109,14 +131,17 @@ const gameLost = function() {
     const BODY = document.querySelector("body");
     BODY.classList.remove("happy-city");
     BODY.classList.add("explosion");
+    clearInterval(countdown);
     domResetBtn.disabled = false;
     wireDiv.removeEventListener("click", wireClickHandler);
 }
 
 const gameWon = function() {
-    console.log("Game Won!");
+    clearInterval(countdown);
     domResetBtn.disabled = false;
     wireDiv.removeEventListener("click", wireClickHandler);
+    domTimer.classList.add("countdown-saved");
+    domTimer.classList.remove("countdown-panic");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
