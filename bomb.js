@@ -1,6 +1,30 @@
 
 const STARTING_TIME = 30;
 
+const WIRE_NUMBER_CLUES = [
+    [
+        "A solo act",
+        "The lonliest number that you'll ever do.",
+        "____ in the hand is better"
+    ],
+    [
+        "A duet",
+        "It takes _____ to tango"
+    ],
+    [
+        "_____s company. or a crowd.",
+        "A trio",
+        "Number of muskateers"
+    ],
+    [
+        "The entire barbershop quartet",
+        "Number of mauraders at Hogwarts"
+    ], 
+    [
+        "One for each finger on your hand"
+    ]
+];
+
 const WIRES = {
     blue: {
         cut: false,
@@ -41,6 +65,7 @@ let domResetBtn;
 let domTimer
 let wireDiv;
 let countdown;
+let numberClue;
 
 const setUpGame = function() {
 
@@ -64,6 +89,8 @@ const setUpGame = function() {
 
     wireDiv.addEventListener("click", wireClickHandler);
 
+    document.getElementById("success").pause();
+
     setUpWiresToCut();
 
     setTimeout(function() {
@@ -71,6 +98,7 @@ const setUpGame = function() {
     }, 500);
 
 }
+
 
 const updateClock = function() {
     // TODO: count down in milliseconds
@@ -98,7 +126,36 @@ const setUpWiresToCut = function() {
         }
     }
 
-    console.log(wiresToCut);
+    if (wiresToCut.length === 0) {
+        let randomWire = Math.floor(Math.random() * 4);
+        WIRES[randomWire].needsCut = true;
+        wiresToCut.push(WIRES[randomWire]);
+    }
+
+    getRandomNumberClue();
+}
+
+const getRandomNumberClue = function() {
+    let clueIndex = WIRE_NUMBER_CLUES[wiresToCut.length - 1];
+    numberClue = clueIndex[Math.floor(Math.random() * (clueIndex.length - 1))];
+    console.log(numberClue);
+    document.getElementById("letter").addEventListener("click", displayLetter);
+}
+
+const displayLetter = function() {
+    document.querySelector(".letter-div").style.visibility = "initial";
+    document.querySelector(".letter-div").style.height = "100%";
+    document.querySelector(".wires").style.visibility = "hidden";
+    document.querySelector(".wires").style.height = "0px";
+    document.querySelector("#number-hint").textContent = numberClue;
+    document.getElementById("close").addEventListener("click", closeLetter);
+}
+
+const closeLetter = function() {
+    document.querySelector(".letter-div").style.visibility = "hidden";
+    document.querySelector(".letter-div").style.height = "0px";
+    document.querySelector(".wires").style.visibility = "initial";
+    document.querySelector(".wires").style.height = "100%";
 }
 
 const wireClickHandler = function(e) {
@@ -109,11 +166,11 @@ const wireClickHandler = function(e) {
         e.target.src = WIRES[currentWireName].cutImage;
         WIRES[currentWireName].cut = true;
         checkWin(WIRES[currentWireName]);
+        document.getElementById("buzz").play();
     }
 }
 
 const checkWin = function(currentWire) {
-    console.log(currentWire);
     if (currentWire.needsCut === false && currentWire.cut === true) {
         setTimeout(gameLost, 750);
         return;
@@ -134,6 +191,7 @@ const gameLost = function() {
     clearInterval(countdown);
     domResetBtn.disabled = false;
     wireDiv.removeEventListener("click", wireClickHandler);
+    document.getElementById("explode").play();
 }
 
 const gameWon = function() {
@@ -142,6 +200,8 @@ const gameWon = function() {
     wireDiv.removeEventListener("click", wireClickHandler);
     domTimer.classList.add("countdown-saved");
     domTimer.classList.remove("countdown-panic");
+    document.getElementById("cheers").play();
+    document.getElementById("success").play();
 }
 
 document.addEventListener("DOMContentLoaded", function() {

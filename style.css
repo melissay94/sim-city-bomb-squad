@@ -2,6 +2,7 @@ html, body {
   margin: 0;
   padding: 0;
   text-align: center;
+  color: white;
 }
 
 .happy-city {
@@ -40,8 +41,25 @@ html, body {
   padding: 20px;
 }
 
+.letter-div {
+  visibility: hidden;
+  height: 0px;
+}
+
+#letter {
+  padding: 0px;
+  border: none;
+  height: 28px;
+}
+
+#letter img{
+  display: inline-block;
+  width: 35px;
+  height: 28px;
+}
+
 .reset {
-  display: block;
+  display: inline-block;
   height: 28px;
   width: 100%;
   background-color: white;
